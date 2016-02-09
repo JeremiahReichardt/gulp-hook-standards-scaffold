@@ -10,7 +10,7 @@ function App() {
   var gl = createGL();
   var canvas = gl.canvas;
 
-  console.log( new Background() );
+  new Background();
 
   document.body.appendChild(canvas);
 
