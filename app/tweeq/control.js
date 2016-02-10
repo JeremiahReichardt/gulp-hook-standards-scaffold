@@ -12,7 +12,9 @@ var _componentEmitter2 = _interopRequireDefault(_componentEmitter);
 
 var _deku = require('deku');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
 var extensions = [];
 
@@ -103,7 +105,7 @@ function control(name, value, options) {
    */
   control.changed = function () {
 
-    console.log( arguments );
+    console.log(arguments);
 
     control.on.apply(control, ['change'].concat(Array.prototype.slice.call(arguments)));
   };

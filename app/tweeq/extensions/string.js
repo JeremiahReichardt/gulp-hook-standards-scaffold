@@ -18,9 +18,9 @@ function render(control, el) {
   };
 
   var label = el('label', null, name);
-  var input = el('input', { type: 'text', value: value, onChange: onChange });
+  var input = el('input', {type: 'text', value: value, onChange: onChange});
 
-  return el('div', { class: 'tweeq-control' }, label, input);
+  return el('div', {class: 'tweeq-control'}, label, input);
 }
 
-exports.default = { fit: fit, render: render };
+exports.default = {fit: fit, render: render};

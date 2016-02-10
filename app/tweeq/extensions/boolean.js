@@ -18,9 +18,9 @@ function render(control, el) {
   };
 
   var label = el('label', null, name);
-  var input = el('input', { type: 'checkbox', checked: value });
+  var input = el('input', {type: 'checkbox', checked: value});
 
-  return el('div', { class: 'tweeq-control', onClick: onClick }, label, input);
+  return el('div', {class: 'tweeq-control', onClick: onClick}, label, input);
 }
 
-exports.default = { fit: fit, render: render };
+exports.default = {fit: fit, render: render};

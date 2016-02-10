@@ -23,7 +23,9 @@ var _views = require('./views');
 
 var _views2 = _interopRequireDefault(_views);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
 function container() {
   var name = arguments.length <= 0 || arguments[0] === undefined ? 'default' : arguments[0];
@@ -40,7 +42,8 @@ function container() {
 
   // Toggles the open-ness of the container and rerenders the container.
   var toggle = function toggle(event) {
-    open = !open;container.emit('render');
+    open = !open;
+    container.emit('render');
   };
 
   // Tracks whether the container view is open or closed.
@@ -80,7 +83,7 @@ function container() {
     var render = function render() {
 
       var rendered = (0, _deku.element)(container);
-      var rootnode = (0, _deku.element)('div', { class: 'tweeq-root' }, rendered);
+      var rootnode = (0, _deku.element)('div', {class: 'tweeq-root'}, rendered);
 
       renderer(rootnode);
     };
@@ -106,7 +109,7 @@ function container() {
     var view = open ? _views2.default.groupOpened : _views2.default.groupClosed;
 
     // Render the view with some named parameters.
-    return view.render({ name: name, children: children, toggle: toggle });
+    return view.render({name: name, children: children, toggle: toggle});
   };
 
   return container;

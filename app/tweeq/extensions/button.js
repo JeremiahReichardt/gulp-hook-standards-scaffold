@@ -19,7 +19,7 @@ function render(control, el) {
 
   var label = el('label', null, name);
 
-  return el('div', { class: 'tweeq-control', onClick: onClick }, label);
+  return el('div', {class: 'tweeq-control', onClick: onClick}, label);
 }
 
-exports.default = { fit: fit, render: render };
+exports.default = {fit: fit, render: render};

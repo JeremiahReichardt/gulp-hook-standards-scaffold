@@ -12,6 +12,8 @@ var _groupClosed = require('./group-closed');
 
 var _groupClosed2 = _interopRequireDefault(_groupClosed);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
-exports.default = { groupOpened: _groupOpened2.default, groupClosed: _groupClosed2.default };
+exports.default = {groupOpened: _groupOpened2.default, groupClosed: _groupClosed2.default};

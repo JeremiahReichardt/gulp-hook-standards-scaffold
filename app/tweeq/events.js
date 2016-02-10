@@ -26,4 +26,4 @@ function once(target, type, handler) {
   target.addEventListener(type, closure);
 }
 
-exports.default = { on: on, off: off, once: once };
+exports.default = {on: on, off: off, once: once};

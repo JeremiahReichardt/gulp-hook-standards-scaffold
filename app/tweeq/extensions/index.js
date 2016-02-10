@@ -28,7 +28,9 @@ var _vector = require('./vector');
 
 var _vector2 = _interopRequireDefault(_vector);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
 exports.default = {
 

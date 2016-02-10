@@ -20,10 +20,12 @@ var _styles = require('./styles');
 
 var _styles2 = _interopRequireDefault(_styles);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
 // Inject the styles into the page.
-(0, _insertCss2.default)(_styles2.default, { prepend: true });
+(0, _insertCss2.default)(_styles2.default, {prepend: true});
 
 // Register the default views.
 for (var key in _extensions2.default) {
@@ -39,4 +41,4 @@ for (var key in _extensions2.default) {
 //
 // which isn't awesome. Using `module.exports` keeps compatability.
 
-module.exports = { container: _container2.default, control: _control2.default, extend: _control.extend };
+module.exports = {container: _container2.default, control: _control2.default, extend: _control.extend};

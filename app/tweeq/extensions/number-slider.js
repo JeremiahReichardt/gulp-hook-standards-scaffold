@@ -12,7 +12,9 @@ var _events = require('../events');
 
 var _events2 = _interopRequireDefault(_events);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {default: obj};
+}
 
 function fit(value, options) {
 
@@ -69,14 +71,19 @@ function render(control, el) {
   };
 
   var controlLabel = el('label', null, name);
-  var valueLabel = el('div', { style: 'position: absolute; left: 0; right: 0; text-align: center;' }, value.toPrecision(2));
+  var valueLabel = el('div', {style: 'position: absolute; left: 0; right: 0; text-align: center;'}, value.toPrecision(2));
 
-  var background = el('div', { style: 'position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: black;' });
-  var foreground = el('div', { style: 'position: absolute; top: 0; left: 0; bottom: 0; right: ' + (100 - 100 * (value / options.max - options.min)) + '%; background: #4C6767;' });
+  var background = el('div', {style: 'position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: black;'});
+  var foreground = el('div', {style: 'position: absolute; top: 0; left: 0; bottom: 0; right: ' + (100 - 100 * (value / options.max - options.min)) + '%; background: #4C6767;'});
 
-  var slider = el('div', { class: 'clickable', style: 'flex: 1; position: relative', onClick: onClick, onMouseDown: onMouseDown }, background, foreground, valueLabel);
+  var slider = el('div', {
+    class: 'clickable',
+    style: 'flex: 1; position: relative',
+    onClick: onClick,
+    onMouseDown: onMouseDown
+  }, background, foreground, valueLabel);
 
-  return el('div', { class: 'tweeq-control' }, controlLabel, slider);
+  return el('div', {class: 'tweeq-control'}, controlLabel, slider);
 }
 
-exports.default = { fit: fit, render: render };
+exports.default = {fit: fit, render: render};
