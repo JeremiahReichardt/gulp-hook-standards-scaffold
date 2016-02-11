@@ -48,7 +48,7 @@ Background.prototype.tweeqIt = function (addControls) {
       }).changed(obj.func.bind(obj));
     }
   }
-}
+};
 
 Background.prototype.init = function () {
   this.background = createBackground(shell.gl);

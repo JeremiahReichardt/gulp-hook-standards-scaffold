@@ -1,16 +1,17 @@
 'use strict';
 
 var shell = require('gl-now')();
-var createMesh = require('gl-mesh');
-var simple3DShader = require('simple-3d-shader');
+//var createMesh = require('gl-mesh');
+//var simple3DShader = require('simple-3d-shader');
 var attachCamera = require('game-shell-orbit-camera');
-var glm = require('gl-matrix');
+//var glm = require('gl-matrix');
 
 var Background = require('./components/Background');
 var Dome = require('./components/Dome');
+var Logo = require('./components/Logo');
 
-var mat4 = glm.mat4;
-var shader, mesh;
+//var mat4 = glm.mat4;
+//var shader, mesh;
 var camera = attachCamera(shell);
 
 function App() {
@@ -21,27 +22,28 @@ function App() {
 }
 
 App.prototype.init = function () {
-  shader = simple3DShader(shell.gl);
-  mesh = createMesh(shell.gl, require('bunny'));
+  //shader = simple3DShader(shell.gl);
+  //mesh = createMesh(shell.gl, require('bunny'));
 
   new Background();
   new Dome();
+  new Logo();
 };
 
 App.prototype.render = function () {
-  //Bind shader
-  shader.bind();
-
-  //Set camera parameters
-  var scratch = mat4.create();
-  shader.uniforms.model = scratch;
-  shader.uniforms.projection = mat4.perspective(scratch, Math.PI / 4.0, shell.width / shell.height, 0.1, 1000.0);
-  shader.uniforms.view = camera.view(scratch);
-
-  //Draw object
-  mesh.bind(shader);
-  mesh.draw();
-  mesh.unbind();
+  ////Bind shader
+  //shader.bind();
+  //
+  ////Set camera parameters
+  //var scratch = mat4.create();
+  //shader.uniforms.model = scratch;
+  //shader.uniforms.projection = mat4.perspective(scratch, Math.PI / 4.0, shell.width / shell.height, 0.1, 1000.0);
+  //shader.uniforms.view = camera.view(scratch);
+  //
+  ////Draw object
+  //mesh.bind(shader);
+  //mesh.draw();
+  //mesh.unbind();
 };
 
 module.exports = App;
