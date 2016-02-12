@@ -1,10 +1,10 @@
 'use strict';
 
+
+var shell;
+var gl;
 var glslify = require('glslify');
 var glShader = require('gl-shader');
-var shell = require('gl-now')();
-
-var gl;
 var loaded = false;
 var image;
 var shader;
@@ -15,20 +15,18 @@ var resolutionLocation;
 var textureSizeLocation;
 var positionBuffer;
 
-function Logo() {
-  shell.on('gl-init', this.init.bind(this));
-  shell.on('gl-render', this.render.bind(this));
-}
-
-Logo.prototype.init = function() {
-  gl = shell.gl;
+function Logo( _shell ) {
+  shell = _shell;
+  gl = _shell.gl;
   this.loadImage();
-};
+}
 
 Logo.prototype.render = function() {
   if ( loaded === false ){
     return;
   }
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
 
   shader.bind();
 
@@ -44,10 +42,10 @@ Logo.prototype.render = function() {
 
   // move the image
   this.setRectangle(
-    ( shell.width / 2 ) - ( image.width / 2 ),
-    ( shell.height / 2 ) - ( image.width / 2 ),
-    image.width,
-    image.height
+    ( shell.width / 2 ) - ( image.width / 4 ),
+    ( shell.height / 2 ) - ( image.width / 4 ),
+    image.width / 2,
+    image.height / 2
   );
 
   // Draw the rectangle.

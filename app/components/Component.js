@@ -1,16 +1,12 @@
 'use strict';
 
-var shell = require('gl-now')();
+var shell;
 var gl;
 
-function Component() {
-  shell.on('gl-init', this.init.bind(this));
-  shell.on('gl-render', this.render.bind(this));
+function Component(_shell) {
+  shell = _shell;
+  gl = _shell.gl;
 }
-
-Component.prototype.init = function() {
-  gl = shell.gl;
-};
 
 Component.prototype.render = function() {
 

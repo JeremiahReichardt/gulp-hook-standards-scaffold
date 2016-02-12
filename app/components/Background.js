@@ -1,10 +1,14 @@
 'use strict';
 
-var shell = require('gl-now')();
+var shell;
+var gl;
 var createBackground = require('gl-vignette-background');
 var tweeq = require('../tweeq/index');
 
-function Background() {
+function Background(_shell) {
+
+  shell = _shell;
+  gl = _shell.gl;
 
   this.tweeqable = {
     scale: {default: 0.096, min: 0, max: 1},
@@ -22,10 +26,9 @@ function Background() {
     offset2: {default: -2, min: -2, max: 2}
   };
 
-  shell.on('gl-init', this.init.bind(this));
-  shell.on('gl-render', this.render.bind(this));
-
   this.tweeqIt(false);
+
+  this.background = createBackground(shell.gl);
 }
 
 Background.prototype.tweeqIt = function (addControls) {
@@ -48,10 +51,6 @@ Background.prototype.tweeqIt = function (addControls) {
       }).changed(obj.func.bind(obj));
     }
   }
-};
-
-Background.prototype.init = function () {
-  this.background = createBackground(shell.gl);
 };
 
 Background.prototype.render = function () {

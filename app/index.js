@@ -1,49 +1,51 @@
 'use strict';
 
 var shell = require('gl-now')();
-//var createMesh = require('gl-mesh');
-//var simple3DShader = require('simple-3d-shader');
-var attachCamera = require('game-shell-orbit-camera');
-//var glm = require('gl-matrix');
-
 var Background = require('./components/Background');
 var Dome = require('./components/Dome');
 var Logo = require('./components/Logo');
+var Logo3D = require('./components/Logo3D');
 
-//var mat4 = glm.mat4;
-//var shader, mesh;
-var camera = attachCamera(shell);
+var ID = 'Index';
+var gl;
+var dome;
+var logo;
+var logo3D;
+var background;
 
 function App() {
-  camera.lookAt([0, 3, 20], [0, 3, 0], [0, 1, 0]);
-
   shell.on('gl-init', this.init.bind(this));
   shell.on('gl-render', this.render.bind(this));
 }
 
 App.prototype.init = function () {
-  //shader = simple3DShader(shell.gl);
-  //mesh = createMesh(shell.gl, require('bunny'));
 
-  new Background();
-  new Dome();
-  new Logo();
+  gl = shell.gl;
+
+  background = new Background(shell);
+  dome = new Dome(shell);
+  logo = new Logo(shell);
+  logo3D = new Logo3D(shell);
+
 };
 
 App.prototype.render = function () {
-  ////Bind shader
-  //shader.bind();
-  //
-  ////Set camera parameters
-  //var scratch = mat4.create();
-  //shader.uniforms.model = scratch;
-  //shader.uniforms.projection = mat4.perspective(scratch, Math.PI / 4.0, shell.width / shell.height, 0.1, 1000.0);
-  //shader.uniforms.view = camera.view(scratch);
-  //
-  ////Draw object
-  //mesh.bind(shader);
-  //mesh.draw();
-  //mesh.unbind();
+
+  gl.enable( gl.BLEND );
+  gl.blendEquation( gl.FUNC_ADD );
+  gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+
+  background.render();
+
+  dome.render();
+
+  logo.render();
+
+  gl.enable( gl.BLEND );
+  gl.blendEquation( gl.FUNC_ADD );
+  gl.blendFunc( gl.SRC_COLOR, gl.ONE_MINUS_SRC_COLOR  );
+
+  logo3D.render();
 };
 
 module.exports = App;
