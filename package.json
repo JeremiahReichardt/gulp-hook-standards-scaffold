@@ -73,6 +73,7 @@
     "nib": "^1.0.3",
     "opn": "~1.0.0",
     "parse-wavefront-obj": "^1.0.1",
+    "perspective-camera": "^2.0.1",
     "redux": "^3.0.5",
     "simple-3d-shader": "0.0.0",
     "vinyl-buffer": "^1.0.0",

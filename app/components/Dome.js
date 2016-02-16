@@ -2,52 +2,96 @@
 
 var shell;
 var gl;
-var createGeom = require('gl-geometry');
-var wire = require('gl-wireframe');
-var mat4 = require('gl-mat4');
-var ID = 'Dome';
-var icosphere;
-var projection = mat4.create();
-var rotation = mat4.create();
-var view = mat4.create();
-var geom;
-var shader;
+var camera;
 
-function Dome(_shell) {
+var createGeometry = require('gl-geometry');
+var createShader = require('gl-shader');
+var mat4 = require('gl-mat4');
+var icosphere = require('icosphere');
+
+var glslify = require('glslify');
+var tweeq = require('../tweeq/index');
+
+var shader;
+var mesh;
+var geom;
+var model;
+var rotationRate = 0;
+
+function Dome(_shell, _camera) {
 
   shell = _shell;
   gl = _shell.gl;
+  camera = _camera;
 
-  icosphere = require('icosphere')(3);
-  icosphere.cells = wire(icosphere.cells);
-  geom = createGeom(gl)
-    .attr('positions', icosphere.positions)
-    .faces(icosphere.cells);
-
+  //create our shader
   shader = require('gl-basic-shader')(gl);
 
-  mat4.translate(view, view, [0, -1.3, -3]);
+  //set up a sphere geometry
+  mesh = icosphere(3);
+  geom = createGeometry(gl)
+    .attr('position', mesh.positions)
+    .faces(mesh.cells);
 
-  mat4.rotateZ(rotation, rotation, 0.005);
+  //the model-space transform for our sphere
+  model = mat4.create();
+
+  this.tweeqable = {
+    scale: {default: 0.022, min: 0, max: 1},
+    x: {default: 0.0, min: 0, max: 1},
+    y: {default: 0.0, min: 0, max: 1},
+    z: {default: 0.035, min: 0, max: 1},
+    rotation: {default: 0.0025, min: 0, max: 0.25}
+  };
+
+  this.tweeqIt(true);
 }
 
+Dome.prototype.tweeqIt = function (addControls) {
+  var controls;
+  if (addControls) {
+    controls = tweeq.container();
+    controls.mount(document.querySelector('#controls'));
+  }
+  for (var key in this.tweeqable) {
+    var val = this.tweeqable[key];
+    val.value = val.default;
+    val._value = val.default;
+    if (addControls) {
+      var obj = {};
+      obj.func = function (value) {
+        this.val.value = value;
+      };
+      obj.val = val;
+      controls.add(key, val.default, {
+        min: val.min,
+        max: val.max
+      }).changed(obj.func.bind(obj));
+    }
+  }
+};
+
 Dome.prototype.render = function () {
-  var width = shell.width;
-  var height = shell.height;
 
-  var aspect = width / height;
+  var s = this.tweeqable.scale.value * -1;
 
-  mat4.perspective(projection, Math.PI / 4, aspect, 1, 1000);
+  //set up our model matrix
+  mat4.identity(model);
+  mat4.translate(model, model, [this.tweeqable.x.value,this.tweeqable.y.value,this.tweeqable.z.value]);
+  mat4.scale(model, model, [s,s,s]);
 
-  //rotate model matrix around Y axis
-  mat4.rotateY(rotation, rotation, 0.0005);
+  this.tweeqable.rotation._value -= this.tweeqable.rotation.value;
 
+  mat4.rotateZ(model, model, this.tweeqable.rotation._value);
+
+  //set our uniforms for the shader
   shader.bind();
-  shader.uniforms.projection = projection;
-  shader.uniforms.view = view; //zoom out so we can see it
-  shader.uniforms.model = rotation;
+  shader.uniforms.projection = camera.projection;
+  shader.uniforms.view = camera.view;
+  shader.uniforms.model = model;
   shader.uniforms.tint = [1, 0, 1, 1]; // RGBA
 
+  //draw the mesh
   geom.bind(shader);
   geom.draw(gl.LINES);
   geom.unbind();

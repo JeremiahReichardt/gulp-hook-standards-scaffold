@@ -32,8 +32,9 @@ function Background(_shell) {
 }
 
 Background.prototype.tweeqIt = function (addControls) {
+  var controls;
   if (addControls) {
-    var controls = tweeq.container();
+    controls = tweeq.container();
     controls.mount(document.querySelector('#controls'));
   }
   for (var key in this.tweeqable) {

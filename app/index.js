@@ -1,17 +1,14 @@
 'use strict';
 
 var shell = require('gl-now')();
-var Background = require('./components/Background');
-var Dome = require('./components/Dome');
-var Logo = require('./components/Logo');
-var Logo3D = require('./components/Logo3D');
-
-var ID = 'Index';
+var mat4 = require('gl-mat4');
+var createCamera = require('perspective-camera');
 var gl;
+var camera;
+var Dome = require('./components/Dome');
+var tweeq = require('./tweeq/index');
+
 var dome;
-var logo;
-var logo3D;
-var background;
 
 function App() {
   shell.on('gl-init', this.init.bind(this));
@@ -22,30 +19,58 @@ App.prototype.init = function () {
 
   gl = shell.gl;
 
-  background = new Background(shell);
-  dome = new Dome(shell);
-  logo = new Logo(shell);
-  logo3D = new Logo3D(shell);
-
-};
-
-App.prototype.render = function () {
-
   gl.enable( gl.BLEND );
   gl.blendEquation( gl.FUNC_ADD );
   gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
 
-  background.render();
+  camera = createCamera({
+    fov: Math.PI / 4,
+    near: 0.01,
+    far: 1000
+  });
+
+  this.tweeqable = {
+    x: {default: 0.0, min: 0, max: 1},
+    y: {default: 0.080, min: 0, max: 1},
+    z: {default: 0.0, min: 0, max: 1}
+  };
+
+  dome = new Dome(shell, camera);
+
+  this.tweeqIt(false);
+};
+
+App.prototype.render = function () {
+  camera.identity();
+  camera.translate([ this.tweeqable.x.value, this.tweeqable.y.value, this.tweeqable.z.value ]);
+  camera.lookAt([0, 0, 0]);
+  camera.viewport = [0, 0, shell.width, shell.height];
+  camera.update();
 
   dome.render();
+};
 
-  logo.render();
-
-  gl.enable( gl.BLEND );
-  gl.blendEquation( gl.FUNC_ADD );
-  gl.blendFunc( gl.SRC_COLOR, gl.ONE_MINUS_SRC_COLOR  );
-
-  logo3D.render();
+App.prototype.tweeqIt = function (addControls) {
+  var controls;
+  if (addControls) {
+    controls = tweeq.container();
+    controls.mount(document.querySelector('#controls'));
+  }
+  for (var key in this.tweeqable) {
+    var val = this.tweeqable[key];
+    val.value = val.default;
+    if (addControls) {
+      var obj = {};
+      obj.func = function (value) {
+        this.val.value = value;
+      };
+      obj.val = val;
+      controls.add(key, val.default, {
+        min: val.min,
+        max: val.max
+      }).changed(obj.func.bind(obj));
+    }
+  }
 };
 
 module.exports = App;
